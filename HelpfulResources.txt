@@ -1,0 +1,4 @@
+Alexa Developer Portal: https://developer.amazon.com/en-US/alexa
+Alexa Tutorials: https://developer.amazon.com/en-US/alexa/alexa-skills-kit/get-deeper/tutorials-code-samples
+Alexa Documentation: https://developer.amazon.com/en-US/docs/alexa/ask-overviews/build-skills-with-the-alexa-skills-kit.html
+Alexa YouTube Channel: https://www.youtube.com/channel/UCbx0SPpWT6yB7_yY_ik7pmg
