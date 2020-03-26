@@ -1,0 +1,146 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "ops buddy",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "DeployProdIntent",
+                    "slots": [
+                        {
+                            "name": "user_id",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "user id {user_id}",
+                                "My user id is {user_id} ",
+                                "{user_id}"
+                            ]
+                        },
+                        {
+                            "name": "passcode",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "passcode {passcode}",
+                                "my passcode is {passcode}",
+                                "{passcode}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "trigger prod deployment",
+                        "Deploy prod",
+                        "Deploy production",
+                        "Deploy my site"
+                    ]
+                },
+                {
+                    "name": "HealthCheckIntent",
+                    "slots": [],
+                    "samples": [
+                        "what is the health status of production",
+                        "what is the status of my website",
+                        "is production healthly",
+                        "is my website healthy",
+                        "is my website up",
+                        "is my website running",
+                        "what is the health of my site",
+                        "is my site up",
+                        "Is my site health"
+                    ]
+                },
+                {
+                    "name": "LastDeploymentInfoIntent",
+                    "slots": [],
+                    "samples": [
+                        "give me info about the last deployment",
+                        "when was my last deployment",
+                        "what was the status of my last deployment",
+                        "Tell me about the last deployment"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                }
+            ],
+            "types": []
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "DeployProdIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "user_id",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.407307244816.687160109053"
+                            }
+                        },
+                        {
+                            "name": "passcode",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.407307244816.298461422653"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.407307244816.687160109053",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "can you please provide me with your user id"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What is your user id"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.407307244816.298461422653",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please tell me your passcode"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What is your passcode"
+                    }
+                ]
+            }
+        ]
+    }
+}

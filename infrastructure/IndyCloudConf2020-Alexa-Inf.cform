@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This stack creates the needed AWS resources for the the Ops Buddy Alexa App."
+
+Parameters:
+  StackPrefix:
+    Description: Name of the current stack. Must be in all lowercase and no spaces.
+    Type: String
+
+  LambdaCodePackagesBucket:
+    Description: Name of the bucket that contains code packages for lambda. Note this bucket needs to have been created ahead of time
+    Type: String
+
+  LambdaOpsBuddyKey:
+    Description: Path in the LambdaCodePackagesBucket that contains the code package for the lambda user for the Ops Buddy Alexa App.
+    Type: String
+
+  CodePipelineName:
+    Description: Name of the CodePipeline being used for the website.
+    Type: String
+
+  WebsiteUrl:
+    Description: Url of the website Ops Buddy will preform healthchecks for.
+    Type: String
+
+  AlexaSkillId:
+    Description: Skill ID of the Alexa App from the Alexa Skill Builder Console.
+    Type: String
+
+Resources:
+# IAM 
+  OpsBuddyLambdaRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess"
+        - "arn:aws:iam::aws:policy/AWSLambdaExecute"
+
+# Lambda
+  OpsBuddyLambda:
+    Type: AWS::Lambda::Function
+    Properties: 
+      Code: 
+          S3Bucket: !Ref LambdaCodePackagesBucket
+          S3Key: !Ref LambdaOpsBuddyKey
+      Description: "Code for the Alexa App - Ops Buddy"
+      FunctionName: !Sub "${StackPrefix}-alexa-ops-buddy"
+      Handler: ops_buddy.handler
+      MemorySize: 128
+      Role: !GetAtt 
+        - OpsBuddyLambdaRole
+        - Arn
+      Runtime: python3.8
+      Timeout: 8
+      Environment:
+        Variables:
+          pipeline_name: !Ref CodePipelineName
+          website_url: !Ref WebsiteUrl
+
+  OpsBuddyLambdaTrigger:
+    Type: AWS::Lambda::Permission
+    Properties: 
+      Action: lambda:InvokeFunction
+      EventSourceToken: !Ref AlexaSkillId
+      FunctionName: !Ref OpsBuddyLambda
+      Principal: alexa-appkit.amazon.com
+
+Outputs:
+  OpsBuddyLambdaArn:
+    Value: !GetAtt OpsBuddyLambda.Arn
+    Description: Arn of the Ops Buddy Lambda to be used in the Alexa Developer portal.
